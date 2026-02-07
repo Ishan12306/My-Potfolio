@@ -132,12 +132,12 @@ export default function BuyPage() {
       {/* Property Type */}
       <div>
         <Label className="text-sm font-medium mb-2 block">Property Type</Label>
-        <Select value={propertyType} onValueChange={setPropertyType}>
+        <Select value={propertyType || undefined} onValueChange={setPropertyType}>
           <SelectTrigger data-testid="filter-property-type">
             <SelectValue placeholder="All Types" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Types</SelectItem>
+            <SelectItem value="all">All Types</SelectItem>
             {propertyTypes.map((type) => (
               <SelectItem key={type.value} value={type.value}>
                 {type.label}
@@ -190,12 +190,12 @@ export default function BuyPage() {
       {/* Furnishing */}
       <div>
         <Label className="text-sm font-medium mb-2 block">Furnishing</Label>
-        <Select value={furnishing} onValueChange={setFurnishing}>
+        <Select value={furnishing || undefined} onValueChange={setFurnishing}>
           <SelectTrigger data-testid="filter-furnishing">
             <SelectValue placeholder="Any" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Any</SelectItem>
+            <SelectItem value="all">Any</SelectItem>
             {furnishingOptions.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>
                 {opt.label}
