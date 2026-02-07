@@ -97,8 +97,9 @@ const sectors = [
   "Sector 6", "Sector 7", "Sector 8", "Sector 9", "Sector 10",
   "Sector 11", "Sector 12", "Sector 13", "Sector 14", "Sector 15",
   "Sector 16", "Sector 17", "Sector 18", "Sector 19", "Sector 20",
-  "Ghansoli", "Vashi", "Kopar Khairane", "Turbhe", "Sanpada",
-  "Nerul", "Seawoods", "Kharghar", "Panvel", "Thane"
+  "Rabale", "Digha", "Vitawa", "Ghansoli", "Vashi", "Kopar Khairane", 
+  "Turbhe", "Sanpada", "Nerul", "Sea Woods", "CBD Belapur",
+  "Kharghar", "Panvel", "Thane", "Mulund"
 ];
 
 export default function PropertyForm({ open, onOpenChange, property, token, onSuccess }) {
