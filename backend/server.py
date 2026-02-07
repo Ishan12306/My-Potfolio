@@ -185,6 +185,34 @@ class Enquiry(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+class RentalProperty(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    flat_no: str
+    society_name: str
+    contact_number: str
+    agreement_start_date: str  # ISO date string YYYY-MM-DD
+    agreement_end_date: str    # ISO date string YYYY-MM-DD
+    remarks: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class RentalPropertyCreate(BaseModel):
+    flat_no: str
+    society_name: str
+    contact_number: str
+    agreement_start_date: str
+    agreement_end_date: str
+    remarks: Optional[str] = None
+
+class RentalPropertyUpdate(BaseModel):
+    flat_no: Optional[str] = None
+    society_name: Optional[str] = None
+    contact_number: Optional[str] = None
+    agreement_start_date: Optional[str] = None
+    agreement_end_date: Optional[str] = None
+    remarks: Optional[str] = None
+
 # ============== REQUEST/RESPONSE MODELS ==============
 
 class SendOTPRequest(BaseModel):
