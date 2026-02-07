@@ -304,15 +304,26 @@ export default function PropertyForm({ open, onOpenChange, property, token, onSu
               </div>
 
               <div>
-                <Label>City</Label>
+                <Label>City/Area</Label>
                 <Select
                   value={formData.city}
                   onValueChange={(val) => updateField("city", val)}
                 >
                   <SelectTrigger className="mt-1">
-                    <SelectValue placeholder="Select city" />
+                    <SelectValue placeholder="Select city/area" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="Airoli">Airoli</SelectItem>
+                    <SelectItem value="Kopar Khairane">Kopar Khairane</SelectItem>
+                    <SelectItem value="Vashi">Vashi</SelectItem>
+                    <SelectItem value="Ghansoli">Ghansoli</SelectItem>
+                    <SelectItem value="Rabale">Rabale</SelectItem>
+                    <SelectItem value="Digha">Digha</SelectItem>
+                    <SelectItem value="Vitawa">Vitawa</SelectItem>
+                    <SelectItem value="Mulund">Mulund</SelectItem>
+                    <SelectItem value="Nerul">Nerul</SelectItem>
+                    <SelectItem value="CBD Belapur">CBD Belapur</SelectItem>
+                    <SelectItem value="Sea Woods">Sea Woods</SelectItem>
                     <SelectItem value="Navi Mumbai">Navi Mumbai</SelectItem>
                     <SelectItem value="Mumbai">Mumbai</SelectItem>
                     <SelectItem value="Thane">Thane</SelectItem>
