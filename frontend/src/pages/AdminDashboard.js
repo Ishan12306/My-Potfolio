@@ -307,7 +307,7 @@ export default function AdminDashboard() {
                     <CardTitle>Quick Actions</CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-3">
-                    <Button onClick={() => setActiveTab("properties")} className="rounded-full">
+                    <Button onClick={() => { setEditingProperty(null); setPropertyDialogOpen(true); }} className="rounded-full" data-testid="add-property-btn">
                       <Plus className="w-4 h-4 mr-2" />
                       Add Property
                     </Button>
