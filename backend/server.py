@@ -205,6 +205,12 @@ class EnquiryCreate(BaseModel):
     email: Optional[str] = None
     message: str
     source: str = "contact"
+    enquiry_type: str = "general"
+    budget_min: Optional[int] = None
+    budget_max: Optional[int] = None
+    preferred_location: Optional[str] = None
+    bedrooms: Optional[str] = None
+    preferred_contact_time: Optional[str] = None
 
 class ListingRequestCreate(BaseModel):
     requester_type: str
