@@ -38,6 +38,7 @@ export default function Header() {
   const navLinks = [
     { href: "/buy", label: "Buy", icon: Building2 },
     { href: "/rentals", label: "Rentals", icon: Key },
+    { href: "/enquiry", label: "Submit Enquiry", icon: FileText },
     { href: "/request-listing", label: "Request Listing", icon: FileText },
     { href: "/contact", label: "Help / Support", icon: HelpCircle },
   ];
