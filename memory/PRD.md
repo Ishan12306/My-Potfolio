@@ -53,14 +53,19 @@ Create a modern, premium, ultra-fast real-estate marketplace website for TM Real
 - Request listing wizard with WhatsApp integration
 - Contact forms logging to database
 - Favorites system for authenticated users
+- **NEW: Property creation form in admin dashboard**
+- **NEW: Image upload functionality (file upload + URL paste)**
+- **NEW: Amenities selection chips**
+- **NEW: Publish/Feature toggles**
 
 ## Prioritized Backlog
 ### P0 - Critical (Next Sprint)
 - MSG91 API integration (currently demo mode)
-- Add property creation form in admin dashboard
-- Image upload functionality
+- ~~Add property creation form in admin dashboard~~ ✅ DONE
+- ~~Image upload functionality~~ ✅ DONE
 
 ### P1 - High Priority
+- Cloud image storage (Cloudinary/S3) for persistent uploads
 - Map view for property listings
 - Saved searches feature
 - Email notifications for enquiries
