@@ -59,11 +59,11 @@ export default function BuyPage() {
       params.set("listing_type", "buy");
       
       if (location) params.set("location", location);
-      if (propertyType) params.set("property_type", propertyType);
+      if (propertyType && propertyType !== "all") params.set("property_type", propertyType);
       if (minPrice) params.set("min_price", minPrice);
       if (maxPrice) params.set("max_price", maxPrice);
       if (bedrooms) params.set("bedrooms", bedrooms.replace("+", ""));
-      if (furnishing) params.set("furnishing", furnishing);
+      if (furnishing && furnishing !== "all") params.set("furnishing", furnishing);
       params.set("sort_by", sortBy);
 
       const response = await axios.get(`${API}/properties?${params.toString()}`);
