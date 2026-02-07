@@ -1003,6 +1003,7 @@ async def get_admin_stats(admin: dict = Depends(require_admin)):
     total_requests = await db.listing_requests.count_documents({})
     pending_requests = await db.listing_requests.count_documents({"status": "pending"})
     total_users = await db.users.count_documents({})
+    total_rental_properties = await db.rental_properties.count_documents({})
     
     return {
         "properties": {
@@ -1020,6 +1021,9 @@ async def get_admin_stats(admin: dict = Depends(require_admin)):
         },
         "users": {
             "total": total_users
+        },
+        "rental_properties": {
+            "total": total_rental_properties
         }
     }
 
