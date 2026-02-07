@@ -63,7 +63,7 @@ class Property(BaseModel):
     listing_type: str  # buy, rent, pg
     price: int
     deposit: Optional[int] = None
-    area_sqft: int
+    area_sqft: Optional[int] = None
     bedrooms: Optional[int] = None
     bathrooms: Optional[int] = None
     furnishing: str = "unfurnished"  # unfurnished, semi-furnished, fully-furnished
@@ -93,7 +93,7 @@ class PropertyCreate(BaseModel):
     listing_type: str
     price: int
     deposit: Optional[int] = None
-    area_sqft: int
+    area_sqft: Optional[int] = None
     bedrooms: Optional[int] = None
     bathrooms: Optional[int] = None
     furnishing: str = "unfurnished"
