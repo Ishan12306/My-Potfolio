@@ -695,12 +695,35 @@ async def update_listing_request_status(
 # ============== ENQUIRY ROUTES ==============
 
 @api_router.post("/enquiries", response_model=Enquiry)
-async def create_enquiry(data: EnquiryCreate):
-    enquiry = Enquiry(**data.model_dump())
+async def create_enquiry(
+    data: EnquiryCreate,
+    user: dict = Depends(get_current_user)
+):
+    enquiry_data = data.model_dump()
+    if user:
+        enquiry_data["user_id"] = user.get("user_id")
+    
+    enquiry = Enquiry(**enquiry_data)
     doc = enquiry.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
+    doc['updated_at'] = doc['updated_at'].isoformat()
     await db.enquiries.insert_one(doc)
     return enquiry
+
+@api_router.get("/my-enquiries", response_model=List[Enquiry])
+async def get_my_enquiries(user: dict = Depends(require_auth)):
+    enquiries = await db.enquiries.find(
+        {"user_id": user["user_id"]},
+        {"_id": 0}
+    ).sort([("created_at", -1)]).to_list(100)
+    
+    for enq in enquiries:
+        if isinstance(enq.get('created_at'), str):
+            enq['created_at'] = datetime.fromisoformat(enq['created_at'])
+        if isinstance(enq.get('updated_at'), str):
+            enq['updated_at'] = datetime.fromisoformat(enq['updated_at'])
+    
+    return enquiries
 
 @api_router.get("/admin/enquiries", response_model=List[Enquiry])
 async def get_enquiries(
@@ -716,6 +739,8 @@ async def get_enquiries(
     for enq in enquiries:
         if isinstance(enq.get('created_at'), str):
             enq['created_at'] = datetime.fromisoformat(enq['created_at'])
+        if isinstance(enq.get('updated_at'), str):
+            enq['updated_at'] = datetime.fromisoformat(enq['updated_at'])
     
     return enquiries
 
@@ -723,14 +748,22 @@ async def get_enquiries(
 async def update_enquiry_status(
     enquiry_id: str,
     status: str,
+    admin_response: Optional[str] = None,
     admin: dict = Depends(require_admin)
 ):
-    if status not in ["new", "contacted", "closed"]:
+    if status not in ["new", "accepted", "rejected", "contacted", "closed"]:
         raise HTTPException(status_code=400, detail="Invalid status")
+    
+    update_data = {
+        "status": status,
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    if admin_response:
+        update_data["admin_response"] = admin_response
     
     result = await db.enquiries.update_one(
         {"id": enquiry_id},
-        {"$set": {"status": status}}
+        {"$set": update_data}
     )
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Enquiry not found")
