@@ -1,0 +1,189 @@
+{
+  "project_name": "TM Real Estate",
+  "design_philosophy": {
+    "identity": "E1 - The Anti-AI Designer",
+    "core_principles": [
+      "Fusion over Imitation: Blend Housing.com utility with Swiss Poster aesthetics",
+      "Emotion First: Trust, Clarity, and Premium Efficiency",
+      "Content is King: Directed storytelling, no generic layouts",
+      "Negative Space: generous padding (2x standard)",
+      "Contrast: Bold Teal vs Clean White"
+    ],
+    "anti_patterns": [
+      "No generic 'Submit Property' buttons (View Only Model)",
+      "No strictly centered layouts without tension",
+      "No muddy gradients",
+      "No 'Inter' for headings"
+    ]
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Manrope, sans-serif",
+      "body": "Inter, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "scale": {
+      "h1": "text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight",
+      "h2": "text-3xl md:text-4xl font-bold tracking-tight",
+      "h3": "text-2xl md:text-3xl font-semibold",
+      "h4": "text-xl md:text-2xl font-semibold",
+      "body_lg": "text-lg leading-relaxed",
+      "body_base": "text-base leading-relaxed text-muted-foreground",
+      "caption": "text-sm text-muted-foreground tracking-wide uppercase"
+    },
+    "imports": [
+      "https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Inter:wght@100..900&display=swap"
+    ]
+  },
+  "colors": {
+    "theme": {
+      "light": {
+        "background": "#FFFFFF",
+        "foreground": "#0F172A",
+        "card": "#FFFFFF",
+        "card_foreground": "#0F172A",
+        "popover": "#FFFFFF",
+        "popover_foreground": "#0F172A",
+        "primary": "#0F766E",
+        "primary_foreground": "#FFFFFF",
+        "secondary": "#F1F5F9",
+        "secondary_foreground": "#0F172A",
+        "muted": "#F8FAFC",
+        "muted_foreground": "#64748B",
+        "accent": "#F0FDFA",
+        "accent_foreground": "#0F766E",
+        "destructive": "#EF4444",
+        "destructive_foreground": "#FFFFFF",
+        "border": "#E2E8F0",
+        "input": "#E2E8F0",
+        "ring": "#0F766E"
+      },
+      "dark": {
+        "background": "#020617",
+        "foreground": "#F8FAFC",
+        "card": "#0F172A",
+        "card_foreground": "#F8FAFC",
+        "popover": "#0F172A",
+        "popover_foreground": "#F8FAFC",
+        "primary": "#2DD4BF",
+        "primary_foreground": "#020617",
+        "secondary": "#1E293B",
+        "secondary_foreground": "#F8FAFC",
+        "muted": "#1E293B",
+        "muted_foreground": "#94A3B8",
+        "accent": "#134E4A",
+        "accent_foreground": "#2DD4BF",
+        "destructive": "#7F1D1D",
+        "destructive_foreground": "#F8FAFC",
+        "border": "#1E293B",
+        "input": "#1E293B",
+        "ring": "#2DD4BF"
+      }
+    },
+    "palette": {
+      "brand_teal": "#0F766E",
+      "brand_teal_light": "#2DD4BF",
+      "action_orange": "#F97316",
+      "success_green": "#10B981",
+      "luxury_gold": "#D4AF37"
+    }
+  },
+  "visual_enhancers": {
+    "radius": {
+      "default": "0.75rem",
+      "button": "9999px",
+      "card": "1rem"
+    },
+    "shadows": {
+      "soft": "0 4px 20px -2px rgba(0, 0, 0, 0.05)",
+      "card_hover": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      "float": "0 25px 50px -12px rgba(15, 118, 110, 0.25)"
+    },
+    "glassmorphism": {
+      "header": "bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-border/40",
+      "overlay": "bg-black/20 backdrop-blur-sm"
+    }
+  },
+  "layout_strategies": {
+    "container": "container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl",
+    "section_spacing": "py-16 md:py-24",
+    "bento_grid": "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[minmax(180px,auto)]",
+    "property_grid": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
+    "hero_alignment": "centered_search_over_image"
+  },
+  "components": {
+    "Button": {
+      "path": "@/components/ui/button",
+      "styles": "rounded-full font-semibold transition-transform active:scale-95",
+      "variants": {
+        "cta": "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 h-12 px-8 text-lg"
+      }
+    },
+    "Card": {
+      "path": "@/components/ui/card",
+      "styles": "rounded-2xl border-border/50 shadow-sm hover:shadow-card_hover transition-all duration-300 bg-card"
+    },
+    "Input": {
+      "path": "@/components/ui/input",
+      "styles": "h-12 rounded-xl border-input bg-background px-4 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
+    },
+    "Badge": {
+      "path": "@/components/ui/badge",
+      "styles": "rounded-full px-3 py-1 text-xs font-medium"
+    }
+  },
+  "media": {
+    "image_urls": {
+      "hero_bg": "https://images.unsplash.com/photo-1638454795595-0a0abf68614d?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "featured_apt": "https://images.unsplash.com/photo-1638454668466-e8dbd5462f20?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "family_testimonial": "https://images.pexels.com/photos/9346147/pexels-photo-9346147.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "office_interior": "https://images.unsplash.com/photo-1761818645928-47e5dad8ec76?crop=entropy&cs=srgb&fm=jpg&q=85"
+    },
+    "rules": {
+      "aspect_ratios": {
+        "card": "aspect-[4/3]",
+        "hero": "aspect-[21/9] md:aspect-[2.5/1]"
+      },
+      "lazy_loading": "true",
+      "alt_text": "Required for all images"
+    }
+  },
+  "accessibility": {
+    "contrast_ratio": "WCAG AA (4.5:1)",
+    "focus_states": "visible focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+    "aria_labels": "Required for icon-only buttons"
+  },
+  "animations": {
+    "micro": {
+      "hover_lift": "hover:-translate-y-1 transition-transform duration-300",
+      "click_press": "active:scale-95 transition-transform duration-100"
+    },
+    "transitions": {
+      "default": "transition-all duration-300 ease-in-out",
+      "page_load": "animate-in fade-in slide-in-from-bottom-4 duration-500"
+    }
+  },
+  "instructions_to_main_agent": {
+    "general": [
+      "Follow the 'E1' persona: Bold, Premium, Functional.",
+      "Implement the 'View-Only' logic strictly. No 'Post Property' buttons for public users.",
+      "Use 'Manrope' for all Headings and Price tags.",
+      "Use 'Inter' for body text.",
+      "Ensure Dark Mode is fully supported using the 'dark:' prefix in Tailwind.",
+      "Use the 'Teal' (#0F766E) as the primary brand color."
+    ],
+    "specific_pages": {
+      "home": "Hero section MUST be a large background image with a centered, floating search bar (Housing.com style). Use the 'hero_bg' image.",
+      "property_card": "Must look premium. Large image, bold price, clear 'View Details' and 'WhatsApp' buttons.",
+      "request_listing": "Implement a multi-step wizard using state. Do not use a simple form. Add a 'Quality Meter' visual.",
+      "admin": "Secure this route. Dashboard should be dense, data-heavy, but clean."
+    }
+  },
+  "universal_guidelines": [
+    "Do NOT apply universal transition (transition: all).",
+    "Do NOT center align the app container text by default.",
+    "Use data-testid attributes for ALL interactive elements (e.g., data-testid='search-button').",
+    "Use sonner for toasts.",
+    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients."
+  ]
+}
