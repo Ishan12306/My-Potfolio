@@ -461,9 +461,9 @@ export default function AdminDashboard() {
                       <TableHeader>
                         <TableRow>
                           <TableHead>Name</TableHead>
-                          <TableHead>Phone</TableHead>
+                          <TableHead>Contact</TableHead>
+                          <TableHead>Type</TableHead>
                           <TableHead>Message</TableHead>
-                          <TableHead>Source</TableHead>
                           <TableHead>Date</TableHead>
                           <TableHead>Status</TableHead>
                           <TableHead>Actions</TableHead>
@@ -472,40 +472,83 @@ export default function AdminDashboard() {
                       <TableBody>
                         {enquiries.map((enquiry) => (
                           <TableRow key={enquiry.id}>
-                            <TableCell className="font-medium">{enquiry.name}</TableCell>
+                            <TableCell>
+                              <div className="font-medium">{enquiry.name}</div>
+                              {enquiry.email && <div className="text-xs text-muted-foreground">{enquiry.email}</div>}
+                            </TableCell>
                             <TableCell>
                               <a href={`tel:${enquiry.phone}`} className="text-primary hover:underline">
                                 {enquiry.phone}
                               </a>
+                              {enquiry.preferred_contact_time && (
+                                <div className="text-xs text-muted-foreground">{enquiry.preferred_contact_time}</div>
+                              )}
                             </TableCell>
-                            <TableCell className="max-w-xs truncate">{enquiry.message}</TableCell>
                             <TableCell>
-                              <Badge variant="outline">{enquiry.source}</Badge>
+                              <Badge variant="outline" className="capitalize">{enquiry.enquiry_type || enquiry.source}</Badge>
+                              {enquiry.preferred_location && (
+                                <div className="text-xs text-muted-foreground mt-1">{enquiry.preferred_location}</div>
+                              )}
+                            </TableCell>
+                            <TableCell className="max-w-xs">
+                              <div className="truncate">{enquiry.message}</div>
+                              {(enquiry.budget_min || enquiry.budget_max) && (
+                                <div className="text-xs text-muted-foreground">
+                                  Budget: ₹{enquiry.budget_min || 0} - ₹{enquiry.budget_max || "Any"}
+                                </div>
+                              )}
                             </TableCell>
                             <TableCell>{formatDate(enquiry.created_at)}</TableCell>
                             <TableCell>
                               <Badge className={
-                                enquiry.status === "new" ? "bg-orange-500" :
-                                enquiry.status === "contacted" ? "bg-blue-500" :
-                                "bg-green-500"
+                                enquiry.status === "new" ? "bg-blue-500" :
+                                enquiry.status === "accepted" ? "bg-green-500" :
+                                enquiry.status === "rejected" ? "bg-red-500" :
+                                enquiry.status === "contacted" ? "bg-orange-500" :
+                                "bg-gray-500"
                               }>
                                 {enquiry.status}
                               </Badge>
                             </TableCell>
                             <TableCell>
-                              <Select
-                                value={enquiry.status}
-                                onValueChange={(val) => handleUpdateEnquiryStatus(enquiry.id, val)}
-                              >
-                                <SelectTrigger className="w-[120px]">
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="new">New</SelectItem>
-                                  <SelectItem value="contacted">Contacted</SelectItem>
-                                  <SelectItem value="closed">Closed</SelectItem>
-                                </SelectContent>
-                              </Select>
+                              <div className="flex items-center gap-1">
+                                {enquiry.status === "new" && (
+                                  <>
+                                    <Button
+                                      size="sm"
+                                      className="bg-green-600 hover:bg-green-700"
+                                      onClick={() => handleUpdateEnquiryStatus(enquiry.id, "accepted")}
+                                      data-testid={`accept-enquiry-${enquiry.id}`}
+                                    >
+                                      Accept
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="destructive"
+                                      onClick={() => handleUpdateEnquiryStatus(enquiry.id, "rejected")}
+                                      data-testid={`reject-enquiry-${enquiry.id}`}
+                                    >
+                                      Reject
+                                    </Button>
+                                  </>
+                                )}
+                                {enquiry.status !== "new" && (
+                                  <Select
+                                    value={enquiry.status}
+                                    onValueChange={(val) => handleUpdateEnquiryStatus(enquiry.id, val)}
+                                  >
+                                    <SelectTrigger className="w-[110px]">
+                                      <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="accepted">Accepted</SelectItem>
+                                      <SelectItem value="rejected">Rejected</SelectItem>
+                                      <SelectItem value="contacted">Contacted</SelectItem>
+                                      <SelectItem value="closed">Closed</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                )}
+                              </div>
                             </TableCell>
                           </TableRow>
                         ))}
