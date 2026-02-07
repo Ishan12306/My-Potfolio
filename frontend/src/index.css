@@ -223,3 +223,8 @@
     display: contents !important;
   }
 }
+
+/* Hide Emergent badge */
+#emergent-badge {
+  display: none !important;
+}
