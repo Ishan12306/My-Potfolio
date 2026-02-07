@@ -78,11 +78,11 @@ export default function BuyPage() {
   const applyFilters = () => {
     const params = new URLSearchParams();
     if (location) params.set("location", location);
-    if (propertyType) params.set("property_type", propertyType);
+    if (propertyType && propertyType !== "all") params.set("property_type", propertyType);
     if (minPrice) params.set("min_price", minPrice);
     if (maxPrice) params.set("max_price", maxPrice);
     if (bedrooms) params.set("bedrooms", bedrooms);
-    if (furnishing) params.set("furnishing", furnishing);
+    if (furnishing && furnishing !== "all") params.set("furnishing", furnishing);
     
     setSearchParams(params);
     setFilterOpen(false);
