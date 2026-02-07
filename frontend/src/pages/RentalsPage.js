@@ -58,11 +58,11 @@ export default function RentalsPage() {
       params.set("listing_type", listingType);
       
       if (location) params.set("location", location);
-      if (propertyType) params.set("property_type", propertyType);
+      if (propertyType && propertyType !== "all") params.set("property_type", propertyType);
       if (minPrice) params.set("min_price", minPrice);
       if (maxPrice) params.set("max_price", maxPrice);
       if (bedrooms) params.set("bedrooms", bedrooms.replace("+", ""));
-      if (furnishing) params.set("furnishing", furnishing);
+      if (furnishing && furnishing !== "all") params.set("furnishing", furnishing);
       params.set("sort_by", sortBy);
 
       const response = await axios.get(`${API}/properties?${params.toString()}`);
@@ -77,11 +77,11 @@ export default function RentalsPage() {
   const applyFilters = () => {
     const params = new URLSearchParams();
     if (location) params.set("location", location);
-    if (propertyType) params.set("property_type", propertyType);
+    if (propertyType && propertyType !== "all") params.set("property_type", propertyType);
     if (minPrice) params.set("min_price", minPrice);
     if (maxPrice) params.set("max_price", maxPrice);
     if (bedrooms) params.set("bedrooms", bedrooms);
-    if (furnishing) params.set("furnishing", furnishing);
+    if (furnishing && furnishing !== "all") params.set("furnishing", furnishing);
     
     setSearchParams(params);
     setFilterOpen(false);
@@ -131,12 +131,12 @@ export default function RentalsPage() {
       {/* Property Type */}
       <div>
         <Label className="text-sm font-medium mb-2 block">Property Type</Label>
-        <Select value={propertyType} onValueChange={setPropertyType}>
+        <Select value={propertyType || undefined} onValueChange={setPropertyType}>
           <SelectTrigger data-testid="filter-property-type">
             <SelectValue placeholder="All Types" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Types</SelectItem>
+            <SelectItem value="all">All Types</SelectItem>
             {propertyTypes.map((type) => (
               <SelectItem key={type.value} value={type.value}>
                 {type.label}
@@ -189,12 +189,12 @@ export default function RentalsPage() {
       {/* Furnishing */}
       <div>
         <Label className="text-sm font-medium mb-2 block">Furnishing</Label>
-        <Select value={furnishing} onValueChange={setFurnishing}>
+        <Select value={furnishing || undefined} onValueChange={setFurnishing}>
           <SelectTrigger data-testid="filter-furnishing">
             <SelectValue placeholder="Any" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Any</SelectItem>
+            <SelectItem value="all">Any</SelectItem>
             {furnishingOptions.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>
                 {opt.label}
