@@ -173,8 +173,9 @@ export default function EnquiryPage() {
   ];
 
   const locations = [
-    "Airoli Sector 8", "Airoli Sector 9", "Airoli", "Ghansoli", 
-    "Vashi", "Kopar Khairane", "Nerul", "Kharghar", "Panvel", "Thane"
+    "Airoli", "Kopar Khairane", "Vashi", "Ghansoli", "Rabale",
+    "Digha", "Vitawa", "Mulund", "Nerul", "CBD Belapur", "Sea Woods",
+    "Airoli Sector 8", "Airoli Sector 9", "Kharghar", "Panvel", "Thane"
   ];
 
   const contactTimes = [
