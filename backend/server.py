@@ -839,6 +839,158 @@ async def remove_favorite(property_id: str, user: dict = Depends(require_auth)):
     )
     return {"message": "Property removed from favorites"}
 
+# ============== RENTAL PROPERTY ROUTES (ADMIN ONLY) ==============
+
+def validate_rental_dates(start_date: str, end_date: str):
+    """Validate that end date is greater than start date"""
+    try:
+        start = datetime.strptime(start_date, "%Y-%m-%d")
+        end = datetime.strptime(end_date, "%Y-%m-%d")
+        if end <= start:
+            raise HTTPException(status_code=400, detail="End date must be greater than start date")
+        return True
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+
+@api_router.get("/admin/rental-properties")
+async def get_rental_properties(
+    page: int = 1,
+    limit: int = 50,
+    admin: dict = Depends(require_admin)
+):
+    """Get paginated rental properties - ADMIN ONLY"""
+    skip = (page - 1) * limit
+    limit = min(limit, 50)  # Max 50 per page
+    
+    total = await db.rental_properties.count_documents({})
+    properties = await db.rental_properties.find({}, {"_id": 0}).sort([("created_at", -1)]).skip(skip).limit(limit).to_list(limit)
+    
+    # Convert datetime strings and compute status dynamically
+    today = datetime.now(timezone.utc).date()
+    for prop in properties:
+        if isinstance(prop.get('created_at'), str):
+            prop['created_at'] = datetime.fromisoformat(prop['created_at'])
+        if isinstance(prop.get('updated_at'), str):
+            prop['updated_at'] = datetime.fromisoformat(prop['updated_at'])
+        
+        # Compute status dynamically
+        try:
+            end_date = datetime.strptime(prop['agreement_end_date'], "%Y-%m-%d").date()
+            remaining_days = (end_date - today).days
+            if remaining_days < 30:
+                prop['status'] = 'due_approaching'
+                prop['status_text'] = 'Due date approaching'
+                prop['remaining_days'] = remaining_days
+            else:
+                prop['status'] = 'enough_time'
+                prop['status_text'] = 'Enough time left'
+                prop['remaining_days'] = remaining_days
+        except:
+            prop['status'] = 'unknown'
+            prop['status_text'] = 'Unknown'
+            prop['remaining_days'] = 0
+    
+    total_pages = (total + limit - 1) // limit
+    
+    return {
+        "data": properties,
+        "pagination": {
+            "page": page,
+            "limit": limit,
+            "total": total,
+            "total_pages": total_pages,
+            "has_next": page < total_pages,
+            "has_prev": page > 1
+        }
+    }
+
+@api_router.post("/admin/rental-properties")
+async def create_rental_property(
+    data: RentalPropertyCreate,
+    admin: dict = Depends(require_admin)
+):
+    """Create a new rental property - ADMIN ONLY"""
+    # Validate required fields
+    if not data.flat_no or not data.flat_no.strip():
+        raise HTTPException(status_code=400, detail="Flat No is required")
+    if not data.society_name or not data.society_name.strip():
+        raise HTTPException(status_code=400, detail="Society Name is required")
+    if not data.contact_number or not data.contact_number.strip():
+        raise HTTPException(status_code=400, detail="Contact Number is required")
+    if not data.agreement_start_date:
+        raise HTTPException(status_code=400, detail="Start Date is required")
+    if not data.agreement_end_date:
+        raise HTTPException(status_code=400, detail="End Date is required")
+    
+    # Validate dates
+    validate_rental_dates(data.agreement_start_date, data.agreement_end_date)
+    
+    rental_prop = RentalProperty(**data.model_dump())
+    doc = rental_prop.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    doc['updated_at'] = doc['updated_at'].isoformat()
+    
+    await db.rental_properties.insert_one(doc)
+    
+    return {"message": "Rental property created successfully", "id": rental_prop.id}
+
+@api_router.put("/admin/rental-properties/{property_id}")
+async def update_rental_property(
+    property_id: str,
+    data: RentalPropertyUpdate,
+    admin: dict = Depends(require_admin)
+):
+    """Update a rental property - ADMIN ONLY"""
+    existing = await db.rental_properties.find_one({"id": property_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Rental property not found")
+    
+    update_data = {}
+    if data.flat_no is not None:
+        if not data.flat_no.strip():
+            raise HTTPException(status_code=400, detail="Flat No cannot be empty")
+        update_data["flat_no"] = data.flat_no
+    if data.society_name is not None:
+        if not data.society_name.strip():
+            raise HTTPException(status_code=400, detail="Society Name cannot be empty")
+        update_data["society_name"] = data.society_name
+    if data.contact_number is not None:
+        if not data.contact_number.strip():
+            raise HTTPException(status_code=400, detail="Contact Number cannot be empty")
+        update_data["contact_number"] = data.contact_number
+    if data.agreement_start_date is not None:
+        update_data["agreement_start_date"] = data.agreement_start_date
+    if data.agreement_end_date is not None:
+        update_data["agreement_end_date"] = data.agreement_end_date
+    if data.remarks is not None:
+        update_data["remarks"] = data.remarks if data.remarks.strip() else None
+    
+    # Validate dates if both are being updated or if one is updated
+    start_date = update_data.get("agreement_start_date", existing.get("agreement_start_date"))
+    end_date = update_data.get("agreement_end_date", existing.get("agreement_end_date"))
+    if start_date and end_date:
+        validate_rental_dates(start_date, end_date)
+    
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    await db.rental_properties.update_one(
+        {"id": property_id},
+        {"$set": update_data}
+    )
+    
+    return {"message": "Rental property updated successfully"}
+
+@api_router.delete("/admin/rental-properties/{property_id}")
+async def delete_rental_property(
+    property_id: str,
+    admin: dict = Depends(require_admin)
+):
+    """Delete a rental property - ADMIN ONLY"""
+    result = await db.rental_properties.delete_one({"id": property_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Rental property not found")
+    return {"message": "Rental property deleted successfully"}
+
 # ============== STATS ROUTES ==============
 
 @api_router.get("/admin/stats")
