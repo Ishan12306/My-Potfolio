@@ -167,14 +167,23 @@ class ListingRequest(BaseModel):
 class Enquiry(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: Optional[str] = None
     property_id: Optional[str] = None
     name: str
     phone: str
     email: Optional[str] = None
     message: str
-    source: str = "contact"  # contact, property, whatsapp
-    status: str = "new"  # new, contacted, closed
+    source: str = "contact"  # contact, property, whatsapp, buy, rent, general, sell
+    enquiry_type: str = "general"  # general, buy, rent, property, sell
+    budget_min: Optional[int] = None
+    budget_max: Optional[int] = None
+    preferred_location: Optional[str] = None
+    bedrooms: Optional[str] = None
+    preferred_contact_time: Optional[str] = None
+    status: str = "new"  # new, accepted, rejected, contacted, closed
+    admin_response: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 # ============== REQUEST/RESPONSE MODELS ==============
 
