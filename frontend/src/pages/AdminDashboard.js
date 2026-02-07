@@ -328,6 +328,10 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Properties ({properties.length})</CardTitle>
+                <Button onClick={() => { setEditingProperty(null); setPropertyDialogOpen(true); }} className="rounded-full" data-testid="add-property-btn-2">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Property
+                </Button>
               </CardHeader>
               <CardContent>
                 {loading ? (
