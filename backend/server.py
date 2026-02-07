@@ -848,14 +848,22 @@ async def get_admin_stats(admin: dict = Depends(require_admin)):
 @api_router.get("/locations")
 async def get_locations():
     return {
-        "cities": ["Navi Mumbai", "Mumbai", "Thane"],
+        "cities": [
+            "Airoli", "Kopar Khairane", "Vashi", "Ghansoli", "Rabale",
+            "Digha", "Vitawa", "Mulund", "Nerul", "CBD Belapur", "Sea Woods",
+            "Navi Mumbai", "Mumbai", "Thane"
+        ],
         "sectors": [
             "Sector 1", "Sector 2", "Sector 3", "Sector 4", "Sector 5",
             "Sector 6", "Sector 7", "Sector 8", "Sector 9", "Sector 10",
             "Sector 11", "Sector 12", "Sector 13", "Sector 14", "Sector 15",
             "Sector 16", "Sector 17", "Sector 18", "Sector 19", "Sector 20"
         ],
-        "areas": ["Airoli", "Ghansoli", "Vashi", "Kopar Khairane", "Turbhe", "Sanpada", "Nerul", "Seawoods", "Kharghar", "Panvel"]
+        "areas": [
+            "Airoli", "Kopar Khairane", "Vashi", "Ghansoli", "Rabale",
+            "Digha", "Vitawa", "Mulund", "Nerul", "CBD Belapur", "Sea Woods",
+            "Turbhe", "Sanpada", "Kharghar", "Panvel"
+        ]
     }
 
 # ============== SEED DATA ROUTE ==============
