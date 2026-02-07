@@ -395,6 +395,15 @@ export default function AdminDashboard() {
                                 <Button
                                   variant="ghost"
                                   size="icon"
+                                  onClick={() => { setEditingProperty(property); setPropertyDialogOpen(true); }}
+                                  title="Edit"
+                                  data-testid={`edit-property-${property.id}`}
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
                                   onClick={() => handleTogglePublish(property.id, property.is_published)}
                                   title={property.is_published ? "Unpublish" : "Publish"}
                                 >
