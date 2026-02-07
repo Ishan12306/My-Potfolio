@@ -608,6 +608,15 @@ export default function AdminDashboard() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Property Form Dialog */}
+      <PropertyForm
+        open={propertyDialogOpen}
+        onOpenChange={setPropertyDialogOpen}
+        property={editingProperty}
+        token={token}
+        onSuccess={fetchData}
+      />
     </div>
   );
 }
